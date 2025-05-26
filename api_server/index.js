@@ -3,6 +3,7 @@ const ModbusRTU = require('modbus-serial');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
+const { generateToken, authMiddleware } = require('./jwt');
 
 require('dotenv').config();
 
@@ -23,20 +24,56 @@ const swaggerDefinition = {
       url: 'http://localhost:3000',
       description: '本地測試伺服器'
     }
-  ]
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
+      }
+    }
+  },
+  security: [{ bearerAuth: [] }]
 };
 
 const options = {
   swaggerDefinition,
-  apis: ['./index.js'], // 將會讀取下方用註解寫的 API 描述
+  apis: ['./index.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-
-
 app.use(bodyParser.json());
+
+// 模擬取得 JWT Token（無帳號密碼）
+app.get('/token', (req, res) => {
+  const token = generateToken({ user: 'demo-user' });
+  res.json({ token: `${token}` });
+});
+
+
+/**
+ * @swagger
+ * /token:
+ *   get:
+ *     summary: 產生 JWT Token（模擬登入）
+ *     description: 回傳一組模擬使用者的 JWT Token，可用於其他需要授權的 API 測試
+ *     responses:
+ *       200:
+ *         description: 成功產生 Token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: Bearer eyJhbGciOiJIUzI1NiIsInR...
+ */
+
+
 
 // 連接到 Python 的 Modbus TCP Server
 client.connectTCP(process.env.MODBUS_HOST || "127.0.0.1", {
@@ -51,7 +88,7 @@ client.connectTCP(process.env.MODBUS_HOST || "127.0.0.1", {
   });
 
 /** GET /modbus/:address 讀取指定位址 */
-app.get('/modbus/:address', async (req, res) => {
+app.get('/modbus/:address', authMiddleware, async (req, res) => {
   const address = parseInt(req.params.address);
   try {
     const data = await client.readHoldingRegisters(address, 1);
@@ -65,6 +102,8 @@ app.get('/modbus/:address', async (req, res) => {
  * /modbus/{address}:
  *   get:
  *     summary: 讀取指定 Holding Register 位址的值
+ *     security:
+ *      -bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: address
@@ -88,7 +127,7 @@ app.get('/modbus/:address', async (req, res) => {
 
 
 /** POST /modbus/:address 寫入數值 { value: 整數 } */
-app.post('/modbus/:address', async (req, res) => {
+app.post('/modbus/:address', authMiddleware, async (req, res) => {
   const address = parseInt(req.params.address);
   const value = req.body.value;
   try {
@@ -104,6 +143,8 @@ app.post('/modbus/:address', async (req, res) => {
  * /modbus/{address}:
  *   post:
  *     summary: 寫入指定 Holding Register 位址的值
+ *     security:
+ *      -bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: address
@@ -149,7 +190,7 @@ rtuClient.connectRTUBuffered("COM6", { baudRate: 9600, parity: 'none' })
   });
 
 /** GET /modbus-rtu/:address 讀取 RTU 裝置的資料 */
-app.get('/modbus-rtu/:address', async (req, res) => {
+app.get('/modbus-rtu/:address', authMiddleware, async (req, res) => {
   const address = parseInt(req.params.address);
   try {
     if (!rtuClient.isOpen) {
@@ -175,6 +216,8 @@ app.get('/modbus-rtu/:address', async (req, res) => {
  * /modbus-rtu/{address}:
  *   get:
  *     summary: 從 RTU 裝置讀取指定 Holding Register 位址的值
+ *     security:
+ *      -bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: address
@@ -200,7 +243,7 @@ app.get('/modbus-rtu/:address', async (req, res) => {
 
 
 /** POST /modbus-rtu/:address 寫入 RTU 裝置的資料 */
-app.post('/modbus-rtu/:address', async (req, res) => {
+app.post('/modbus-rtu/:address', authMiddleware, async (req, res) => {
   const address = parseInt(req.params.address);
   const value = req.body.value;
   try {
@@ -217,6 +260,8 @@ app.post('/modbus-rtu/:address', async (req, res) => {
  * /modbus-rtu/{address}:
  *   post:
  *     summary: 寫入指定 RTU 裝置的 Holding Register 位址的值
+ *     security:
+ *      -bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: address
