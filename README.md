@@ -20,12 +20,30 @@
 * pymodbus（作為模擬或實際 TCP slave/client）
 
 ### 安全性與穩定性機制
+
 * dotenv (環境變數管理與讀取)
 * .env(儲存環境變數)
 
-### Docker 容器化 -->
+### Docker 容器化
  * 各模組具獨立 Dockerfile 並透過 docker-compose 整合。
- 
+
+ * Docker 啟用步驟
+ * 建立 Image
+  ```
+  docker-compose build
+  ```
+ * 先啟動 Modbus TCP Server
+  ```
+  docker-compose up -d modbus_server
+  ```
+ * 啟動 API Server
+  ```
+  docker-compose up -d api_server
+  ```
+ * 確認目前狀態
+  ```
+  docker ps
+  ```
 
 ### git 分支說明
 
@@ -49,7 +67,7 @@ feat: 新增功能
 fix: 修正錯誤
 docs: 文件變更
 style: 格式修正（無邏輯變更）
-refactor: 程式重構
+refactor: 程式與結構重構
 test: 測試腳本與案例
 chore: 其他維護性修改
 ```
@@ -57,37 +75,37 @@ chore: 其他維護性修改
 ### 專案目錄整合（新增串接 Modbus API 的範例結構）
 
 ```
-emsDemo/
-├── api_server/ // Node.js Express RESTful API
-│ ├── index.js // 主要 API 定義與啟動邏輯
-│ ├── jwt.js // JWT 驗證機制
-│ ├── logger.js // 請求日誌紀錄
-│ ├── .env // 環境變數設定
-│ └── Dockerfile // API 容器建置檔
-│
-├── modbus_server/ // Python 實作 Modbus Server
-│ ├── ModbusTCP.py // TCP Server 模擬
-│ ├── ModbusRTU.py // RTU 模式模擬腳本
-│ └── Dockerfile // Modbus Server 容器建置檔
-│
-├── tests/ // 測試與驗證腳本
-│ ├── api.test.js // API 端點測試
-│ ├── modbusTcpClientTest.py
-│ └── modbusRtuClientTest.py
-│
-├── docker-compose.yml // 整合啟動設定
-├── .gitignore
-├── .editorconfig
-├── package.json
-├── README.md
-└── NAMING.md
+EMSDEMO/
+├── api_server/                      # Node.js RESTful API 模組
+│   ├── .env                         # 環境變數設定（如 JWT_SECRET）
+│   ├── Dockerfile                   # API 容器建置設定
+│   ├── index.js                     # 主伺服器與 API 路由定義
+│   ├── jwt.js                       # JWT 驗證模組
+│   ├── logger.js                    # 請求與錯誤日誌管理
+│   ├── package-lock.json            # NPM 鎖定檔（自動產生）
+│   └── package.json                 # 專案依賴與啟動腳本設定
+|
+├── modbus_server/                  # Python 實作之 Modbus Server
+│   ├── Dockerfile                   # Python 容器建置設定
+│   ├── ModbusRTU.py                 # 模擬 RTU 模式伺服器（串列）
+│   └── ModbusTCP.py                 # 模擬 TCP 模式伺服器
+|
+├── tests/                          # 整體測試腳本（不分語言）
+│   ├── api.test.js                  # RESTful API 測試
+│   ├── modbusRtuClienTest.py        # 測試 RTU 通訊功能
+│   └── modbusTcpClienTest.py        # 測試 TCP 通訊功能
+|
+├── .editorconfig                   # 統一編輯器風格設定
+├── .gitignore                      # Git 忽略規則
+├── docker-compose.yml             # Docker 容器整合啟動設定
+├── NAMING.md                      # 命名規則說明（依內容命名）
+└── README.md                      # 專案說明文件
 ```
 
 ### 其他開發規則（命名規則、測試規範、元件拆分等）
 * 採用ESLint
 * 套用Prettier套件自動強制格式排版
 * 命名規則與開發慣例請參考：[NAMING.md](./NAMING.md)
-
 
 ### 測試模擬設置
 
@@ -98,11 +116,9 @@ emsDemo/
   * Unit ID：1
   * Register 範圍：0~9 Holding Register
 
-
 ### Swagger 文件
 * 啟動後可透過以下路徑開啟 API 文件：
 * http://localhost:3000/api-docs
-
 
 ### 聯絡方式
 ```
