@@ -39,7 +39,6 @@
 ```
 git init
 .gitignore(設定node_modules資料夾省略\)
-
 git remote add origin https://github.com/zixuanhugo/emsDemo.git
 
 ```
@@ -54,7 +53,6 @@ style: 程式碼格式（不影響邏輯）
 refactor: 程式碼重構 
 test: 測試相關變更
 chore: 雜項維護
-
 ```
 
 ### 專案目錄整合（新增串接 Modbus API 的範例結構）
