@@ -1,0 +1,12 @@
+version: '3'
+services:
+  modbus_server:
+    build: ./modbus_server
+    ports:
+      - "5020:5020"
+  api_server:
+    build: ./api_server
+    ports:
+      - "3000:3000"
+    environment:
+      - JWT_SECRET=modbus2025

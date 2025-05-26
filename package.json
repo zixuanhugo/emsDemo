@@ -1,0 +1,22 @@
+{
+  "name": "modbus_project",
+  "version": "1.0.0",
+  "description": "結合 Modbus TCP Server 與 RESTful API 架構，支援資料即時讀寫與跨技術整合，並可模擬 Modbus Slave，符合現代化能源系統管理需求。",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "modbus-serial": "^8.0.21-no-serial-port",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
