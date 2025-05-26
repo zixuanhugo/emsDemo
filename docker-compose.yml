@@ -1,4 +1,3 @@
-version: '3'
 services:
   modbus_server:
     build: ./modbus_server
