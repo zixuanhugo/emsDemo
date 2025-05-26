@@ -91,7 +91,6 @@ EMSDEMO/
 │   └── ModbusTCP.py                 # 模擬 TCP 模式伺服器
 |
 ├── tests/                          # 整體測試腳本（不分語言）
-│   ├── api.test.js                  # RESTful API 測試
 │   ├── modbusRtuClienTest.py        # 測試 RTU 通訊功能
 │   └── modbusTcpClienTest.py        # 測試 TCP 通訊功能
 |
