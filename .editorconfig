@@ -1,0 +1,18 @@
+# .editorconfig
+
+# 所有檔案通用設定
+[*]
+charset = utf-8                # 使用 UTF-8 編碼
+indent_style = space           # 縮排使用空格
+indent_size = 2                # 每層縮排 2 個空格（JavaScript 適用）
+end_of_line = lf               # 使用 LF 換行符（跨平台一致）
+insert_final_newline = true    # 檔尾加空行（POSIX 風格）
+trim_trailing_whitespace = true # 移除行尾多餘空格
+
+# Python 檔案使用 4 空格縮排
+[*.py]
+indent_size = 4
+
+# Markdown 保留行尾空格（避免破壞格式）
+[*.md]
+trim_trailing_whitespace = false
