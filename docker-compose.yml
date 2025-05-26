@@ -4,9 +4,12 @@ services:
     build: ./modbus_server
     ports:
       - "5020:5020"
+
   api_server:
     build: ./api_server
     ports:
       - "3000:3000"
     environment:
       - JWT_SECRET=modbus2025
+    depends_on:
+      - modbus_server
