@@ -37,7 +37,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(bodyParser.json());
 
 // 連接到 Python 的 Modbus TCP Server
-client.connectTCP("127.0.0.1", { port: 5020 })
+client.connectTCP("modbus_server", { port: 5020 })
   .then(() => {
     console.log("✅ 已連接到 Modbus TCP Server");
     client.setID(1); // 若單一 Slave 可設定為 1 或 0
