@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 def run_server():
     StartTcpServer(
         context=context,
-        address=("127.0.0.1", 5020)
+        address=("0.0.0.0", 5020)
     )
 
 if __name__ == '__main__':
