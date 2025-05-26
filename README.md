@@ -29,8 +29,8 @@
 
 ### git 分支說明
 
-<!-- * develop：測試環境(開發人員)
-* staging：測試環境(user) -->
+* develop：開發環境(Hugo)
+<!-- * staging：測試環境(user) -->
 * master：正式環境
 
 ### git 前置作業
@@ -108,6 +108,5 @@ emsDemo/
 ```
 作者：黃子軒（Zixuan Hugo）
 GitHub: @zixuanhugo
-
 ```
 ---
