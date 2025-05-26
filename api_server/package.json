@@ -2,19 +2,19 @@
   "name": "modbus_project",
   "version": "1.0.0",
   "description": "結合 Modbus TCP Server 與 RESTful API 架構，支援資料即時讀寫與跨技術整合，並可模擬 Modbus Slave，符合現代化能源系統管理需求。",
-  "main": "api_server/index.js",
+  "main": "index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "start": "node api_server/index.js",
-    "dev": "nodemon api_server/index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "echo \"No test defined yet\" && exit 0"
   },
   "keywords": ["modbus", "restful", "express", "api", "pymodbus"],
-  "author": "Zixuan Hugo",
+  "author": "ZiXuan Hugo",
   "license": "MIT",
   "engines": {
     "node": ">=18"
